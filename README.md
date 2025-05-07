@@ -1,2 +1,2 @@
-# japshop
+# jpashop
 활용1
