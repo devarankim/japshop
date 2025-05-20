@@ -22,4 +22,5 @@ public class Member {
 
     @OneToMany(mappedBy="member") //맵핑을 하는 컬렉션은 아니고 매핑된 거울이라는 뜻. 즉 읽기 전용. 이 값이 수정된다고 FK가 수정되진 않는다.
     private List<Order> orders = new ArrayList<>();
+
 }
