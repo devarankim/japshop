@@ -2,6 +2,8 @@ package jpabook.jpashop.service;
 
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +12,10 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true) //JPA의 어떤 모든 데이터 변경이나 어떤 로직들은 가급적이면 트랜잭션 안에 다 실행돼야 한다
+@RequiredArgsConstructor
 public class MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository; //컴파일 시점에 에러 확인할 수 있으니 생성자주입떄는 꼭 필드는 final로 처리하자
 
     /*
      * 회원가입
