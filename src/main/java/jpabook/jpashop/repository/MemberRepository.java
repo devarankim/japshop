@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
+@RequiredArgsConstructor //초기화 되지 않은 final필드나 @Nonnull이 붙은 필드에 대해 생성자주입을 코드를 자동으로 만들어준다.
 public class MemberRepository {
 
     //@PersistenceContext //JPA의 엔티티 매니저를 SPRING이 생성한 엔티티 매니저에 주입을 해준다.

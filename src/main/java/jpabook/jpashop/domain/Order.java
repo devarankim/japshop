@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -13,12 +14,13 @@ import java.util.List;
 @Getter @Setter
 public class Order {
 
-    @Id @GeneratedValue
-    @Column(name="order_id")
+    @Id
+    @GeneratedValue
+    @Column(name = "order_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="member_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
@@ -31,7 +33,7 @@ public class Order {
 
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="delivery_id")
+    @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
     private LocalDateTime orderDate; //주문시간. java8부터는 해당 클래스 쓰면 hibernate가 알아서 자동 지원해줌
@@ -57,6 +59,39 @@ public class Order {
         delivery.setOrder(this);
     }
 
+    //==생성메소드==//
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+        Order order = new Order();
+        order.setMember(member);
+        order.setDelivery(delivery);
+
+        Arrays.stream(orderItems).forEach(order::addOrderItem);
+        order.setStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+
+        return order;
+    }
+
+    //==비즈니스 로직 ==/
+    public void cancel() {
+        if (delivery.getStatus() == DeliveryStatus.COMP) {
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
+        }
+        this.setStatus(OrderStatus.CANCEL);
+        for (OrderItem orderItem : orderItems) {
+            orderItem.cancel();
+        }
+    }
 
 
+//==조회 로직 ==//
+
+    /**
+     * 전체 주문 가격 조회
+     */
+    public int getTotalPrice() {
+        int totalPrice = orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
+        return totalPrice;
+    }
 }
+
