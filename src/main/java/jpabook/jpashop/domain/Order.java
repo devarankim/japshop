@@ -1,7 +1,9 @@
 package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -12,6 +14,8 @@ import java.util.List;
 @Entity
 @Table(name="orders")
 @Getter @Setter
+@NoArgsConstructor(access= AccessLevel.PROTECTED) //생성자를 protected로 만들어서 다른 곳에서 객체 생성 못하도록!!
+                                                  // 왜나면 객체 생성해서set 하고 이러면 유지보수도 어렵고 소스도 여기저기 분산되어 있어서 에러잡기도 힘ㄷ듬
 public class Order {
 
     @Id
@@ -30,6 +34,7 @@ public class Order {
     //// persist(orderItemA) persist(orderItemB) persist(orderItemc) persist(order)
     //2.All로 지정하면
     //// persist(order) 로 끝낼 수 있다. orderItems 컬렉션 A/B/C 3개를 다 persist해준다
+    ///CascadeType.ALL 은 다른 곳에서 참조하지 않고 딱 오너가 명확한 로직일떄만 사용.
 
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -84,7 +89,7 @@ public class Order {
     }
 
 
-//==조회 로직 ==//
+    //==조회 로직 ==//
 
     /**
      * 전체 주문 가격 조회
