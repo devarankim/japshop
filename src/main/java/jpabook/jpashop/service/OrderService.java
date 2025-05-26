@@ -52,7 +52,7 @@ public class OrderService {
      * 취소
      */
     @Transactional
-    public void Cancel0rder(Long orderId) {
+    public void cancel0rder(Long orderId) {
         //주문 엔티티 조회
         Order order = orderRepository.findOne(orderId);
 

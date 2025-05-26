@@ -39,10 +39,10 @@ class MemberServiceTest {
      public void 중복_회원_예외() throws Exception {
          //given
          Member member1 = new Member();
-         member1.setName("kimaran");
+         member1.setName("kim");
 
          Member member2 = new Member();
-         member2.setName("kimaran");
+         member2.setName("kim");
 
          //WHEN
          memberService.join(member1);
